@@ -5,3 +5,5 @@ docs/*.log
 docs/*.aux
 docs/*.idx
 docs/*.toc
+docs/*.pdf
+cylon.bin
