@@ -312,7 +312,8 @@ public:
   float kappa, L;
   AnchoredSpringForce(Body *body, int i, Vector pin,
 		      float kappa, float L) {
-    this->body = body; this->i = i;
+    this->body = body; 
+    this->i = i;
     this->pin = pin;
     this->kappa = kappa; this->L = L;
   }
@@ -746,6 +747,30 @@ public:
   }
 };
 
+class SpringUniverse : public Universe {
+  public:
+    void build_universe() {
+      Body &b = *new Body();
+      b.color = Vector(1.0, 0.0, 1.0);
+      b.loadObj("assets/sphere.obj");
+      b.p = Vector(0.0, 0.0, 0.0);
+      b.K = Vector(0.0, 0.0, 0.0);
+      b.m = 3.0;
+ 
+      Body &b2 = *new Body();
+      b2.color = Vector(0.0, 0.0, 1.0);
+      b2.loadObj("assets/sphere.obj");
+      b2.p = Vector(-4.0, 0.0, 0.0);
+      b2.K = Vector(0.0, 0.0, 0.0);
+      b2.m = 3.0;
+
+      forces.insert(new SpringForce(&b, 0, &b2, 0, 2.1, 1.0));
+      bodies.insert(&b);
+      bodies.insert(&b2);
+    }
+    void callback() {}
+};
+
 /**
  * Make a universe with composite objects made of cubes
  */
@@ -818,6 +843,7 @@ MyUniverse universe;
 // MyUniverseCubes universe;
 // SimpleUniverse universe;
 // CompositionUniverse universe;
+// SpringUniverse universe;
 
 /**
  * GLUT code below

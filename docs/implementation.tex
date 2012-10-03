@@ -289,15 +289,23 @@ public:
   float kappa, L;
   AnchoredSpringForce(Body *body, int i, Vector pin,
 		      float kappa, float L) {
-    this->body = body; this->i = i;
+    this->body = body; 
+    this->i = i;
     this->pin = pin;
     this->kappa = kappa; this->L = L;
   }
   void apply(float dt) {
+<<<<<<< HEAD
     Vector d = pin-body->vertices[i];
+=======
+    Vector d = body->vertices[i] - pin;
+    cout << "Vector to pin is: " << d(X) << ',' << d(Y) << ',' << d(Z) << ',' << endl;
+>>>>>>> Add a spring force
     float n = norm(d);
+    cout << "Norm is: " << n << endl;
     Vector F = kappa*(n-L)*d/n;
-    body->F = body->F+F;
+    cout << "Force is: " << F(X) << ',' << F(Y) << ',' << F(Z) << endl;
+    body->F = body->F + F;
     body->tau = body->tau + cross(body->Rr[i],F);
   }
 };
@@ -695,6 +703,21 @@ public:
   }
   void callback() {}
 };
+
+class SpringUniverse : public Universe {
+  public:
+    void build_universe() {
+      Body &b = *new Body();
+      b.color = Vector(1.0, 0.0, 1.0);
+      b.loadObj("assets/sphere.obj");
+      b.p = Vector(0.0, 0.0, 0.0);
+      b.K = Vector(0.0, 0.0, 0.0);
+      
+      forces.insert(new AnchoredSpringForce(&b, 0, Vector(-10.0, 0.0, 0.0), 2.1, 1.0));
+      bodies.insert(&b);
+    }
+    void callback() {}
+};
 \end{lstlisting}
 \noindent
 Make a universe with composite objects made of cubes: \begin{lstlisting}
@@ -756,7 +779,11 @@ public:
 // MyUniverse universe;
 // MyUniverseAirplane universe;
 // MyUniverseCubes universe;
+<<<<<<< HEAD
 TrivialUniverse universe;
+=======
+SpringUniverse universe;
+>>>>>>> Add a spring force
 \end{lstlisting}
 \noindent
 Glut code below
